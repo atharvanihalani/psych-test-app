@@ -65,7 +65,7 @@ function ThankScreen(props) {
 function ImgQuestionScreen(props) {
 
   function uploadResponse(ans) {
-    alert("uploaded response")
+    console.log("uploaded response")
     props.sayThanks();
 
     const data = {
@@ -84,19 +84,16 @@ function ImgQuestionScreen(props) {
     
   }
 
-  if (props.activeScene[1] && !props.activeScene[2]) {
-    return (
-      <img src={ shaun } alt='shaun'/>
-    );
-  } else if (props.activeScene[2] && !props.activeScene[1]){
-    return (
-      <div className="media-box">
+  return (
+    <>
+      <img src={ shaun } alt='shaun' className={`${props.activeScene[1] ? 'show' : 'hide'}`} />
+      <div className={`media-box ${props.activeScene[2] ? 'show' : 'hide'}`}>
         <h2>What did you see?</h2>
         <button onClick={() => uploadResponse("sheep")}>Sheep</button>
         <button onClick={() => uploadResponse("cow")}>Cow</button>
       </div>
-    );
-  }
+    </>
+  );
 
 }
 

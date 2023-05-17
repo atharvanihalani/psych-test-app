@@ -7,6 +7,11 @@ app.use(cors());
 app.use(express.json());
 const userResponsesList = [];
 
+const port = process.env.PORT || 5050;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
 app.post('/responses', (req, res) => {
   const userResponse = req.body;
   userResponsesList.push(userResponse);
@@ -15,10 +20,5 @@ app.post('/responses', (req, res) => {
 
 app.get('/data', (req, res) => {
   res.json(userResponsesList);
-});
-
-const port = process.env.PORT || 5050;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
 });
 
