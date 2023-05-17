@@ -1,38 +1,24 @@
-const http = require('http');
-const fs = require('fs');
+const express = require('express');
 const path = require('path');
+const cors = require('cors');
 
-const port = 8000;
+const app = express();
+app.use(cors());
+app.use(express.json());
+const userResponsesList = [];
 
-const server = http.createServer((req, res) => {
-  if (req.url === '/') {
-    // Serve index.html as the home page
-    const indexPath = path.join(__dirname, 'build', 'index.html');
-    fs.readFile(indexPath, 'utf8', (err, data) => {
-      if (err) {
-        console.error(err);
-        res.statusCode = 500;
-        res.end('Internal Server Error');
-      } else {
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(data);
-      }
-    });
-  } else {
-    // Serve static files from the build folder
-    const filePath = path.join(__dirname, 'build', req.url);
-    fs.readFile(filePath, (err, data) => {
-      if (err) {
-        console.error(err);
-        res.statusCode = 404;
-        res.end('File Not Found');
-      } else {
-        res.end(data);
-      }
-    });
-  }
+app.post('/responses', (req, res) => {
+  const userResponse = req.body;
+  userResponsesList.push(userResponse);
+  res.status(200).json({ message: 'Data stored successfully' });
 });
 
-server.listen(port, () => {
+app.get('/data', (req, res) => {
+  res.json(userResponsesList);
+});
+
+const port = process.env.PORT || 5050;
+app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+

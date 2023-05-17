@@ -5,7 +5,7 @@ import shaun from './media/shaun.png'
 
 function App() {
   const [flashImg, setFlashImg] = useState(false);
-  const [timeDisplayed, setTimeDisplayed] = useState(0);
+  const [timeDisplayed, setTimeDisplayed] = useState(500);
   // [home, image, question, thank <3]
   const [activeScene, setActiveScene] = useState([true, false, false, false]);
 
@@ -65,13 +65,23 @@ function ThankScreen(props) {
 function ImgQuestionScreen(props) {
 
   function uploadResponse(ans) {
-    props.sayThanks();
     alert("uploaded response")
-    let data = {
+    props.sayThanks();
+
+    const data = {
       image_id: 13,
       answer: ans,
       time_displayed: props.timeDisplayed
     }
+
+    fetch('http://localhost:5050/responses', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    
   }
 
   if (props.activeScene[1] && !props.activeScene[2]) {
